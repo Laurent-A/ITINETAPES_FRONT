@@ -1,15 +1,14 @@
 package com.app.itinetape;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,13 +27,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
+public class EtapeActivity extends AppCompatActivity {
     private static final Object REQUEST_TAG = new Object();
-    private static final String URL_PATTERN = "http://192.168.1.58:9090/itinetape/etape/1";
-    // private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/etape/2";
+    // private static final String URL_PATTERN = "http://192.168.1.58:9090/itinetape/etape/2";
+    // private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/itineraire/2";
     private RequestQueue requestQueue;
-    private TextView titreEtape;
     private TextView nbFavori;
+    private TextView titreEtape;
     private TextView descriptionEtape;
     private Integer nbFavoriEtapeActuelle;
     private Integer numeroEtapeActuelle;
@@ -44,14 +43,17 @@ public class MainActivity extends AppCompatActivity {
     private Boolean favori = false;
     private String favoriInterne;
     public static final String PREFS_NAME = "MonEtapeCheri";
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_etape);
+
         titreEtape = findViewById(R.id.titreEtape);
         descriptionEtape = findViewById(R.id.description);
         nbFavori = findViewById(R.id.nbFavori);
+
         requestQueue = Volley.newRequestQueue(this);
         this.search(titreEtape);
         ajoutFavori();
@@ -83,13 +85,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendRequest(String titreEtapeActuelle) {
         cancelRequest();
+        // Je récupère le qr code via mon intent
+        Uri intentData = getIntent().getData();
+        // je le met au format string
+        String urlQR = String.format(intentData.toString());
+        // je le split dans un tableau
+        String[] urlStorage = urlQR.split("'");
+        // je récupère l'url au bon format
+        String URL_PATTERN = urlStorage[1];
         titreEtape.setText("Chargement...");
-        String url = String.format(URL_PATTERN, titreEtapeActuelle);
+        url = String.format(URL_PATTERN, titreEtapeActuelle);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        fillDepartementResultat(response);
+                        fillItinetapeResultat(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -106,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    private void fillDepartementResultat(JSONObject jsonObject) {
+    private void fillItinetapeResultat(JSONObject jsonObject) {
         try {
             titreEtapeActuelle = jsonObject.getString("nom");
             descriptionEtapeActuelle = jsonObject.getString("description");
@@ -132,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         }else {
             nbFavoriEtapeActuelle = nbFavoriEtapeActuelle + 1;
         }
-        String url = URL_PATTERN;
         JSONObject requestPayload = new JSONObject();
         requestPayload.put("totalfavori", nbFavoriEtapeActuelle);
         requestPayload.put("nom", titreEtapeActuelle);
@@ -154,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         });
         this.requestQueue.add(request);
     }
+
 
     // Ajout ou retrait d'un favori appel post
     public void ajoutFavori() {
@@ -191,14 +201,15 @@ public class MainActivity extends AppCompatActivity {
     private void saveInterne() throws IOException {
         FileOutputStream out = this.openFileOutput(PREFS_NAME, MODE_PRIVATE);
         if (favori){
-            favoriInterne = "true";
+            favoriInterne = "true" + "/";
+
         }else{
-            favoriInterne = "false";
+            favoriInterne = "false" + "/";
         }
         try {
-            //String etape = String.format("%s", numeroEtapeActuelle);
+            String etape = String.format("%s", numeroEtapeActuelle);
             out.write(favoriInterne.getBytes());
-            //out.write(etape.getBytes());
+            out.write(etape.getBytes());
             out.close();
         } catch (Exception e) {
             Toast.makeText(this,"Error:"+ e.getMessage(),Toast.LENGTH_SHORT).show();
@@ -216,13 +227,14 @@ public class MainActivity extends AppCompatActivity {
                 String resultat = lu.append((char)value).toString();
                 if (resultat.contentEquals("true")){
                     favori = true;
-                    //Toast.makeText(MainActivity.this, "Interne : " + lu.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(EtapeActivity.this, "Interne : " + lu.toString(), Toast.LENGTH_SHORT).show();
                     ajoutfavori.setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_on));
                 } else {
-                    //Toast.makeText(MainActivity.this, "Rien avoir : ",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(EtapeActivity.this, "Rien avoir : ",Toast.LENGTH_SHORT).show();
                     ajoutfavori.setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_off));
                 }
             }
+            Toast.makeText(EtapeActivity.this, "Interne : " + lu.toString(), Toast.LENGTH_SHORT).show();
             if(input != null)
                 input.close();
 
@@ -232,6 +244,4 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 }
