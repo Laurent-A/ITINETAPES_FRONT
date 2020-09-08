@@ -30,8 +30,8 @@ import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
     private static final Object REQUEST_TAG = new Object();
-    private static final String URL_PATTERN = "http://192.168.1.58:9090/itinetape/etape/1";
-    // private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/etape/2";
+    // private static final String URL_PATTERN = "http://l'adresseIpDuPc:9090/itinetape/etape/3";
+    private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/etape/45";
     private RequestQueue requestQueue;
     private TextView titreEtape;
     private TextView nbFavori;
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         sendRequest(titreEtapeActuelle);
     }
 
+    // Requete récupérations des données
     private void sendRequest(String titreEtapeActuelle) {
         cancelRequest();
         titreEtape.setText("Chargement...");
@@ -89,14 +90,15 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        fillDepartementResultat(response);
+                        fillEtapeResultat(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if(error.networkResponse != null
                         && error.networkResponse.statusCode == 404) {
-                    titreEtape.setText("Pas de département trouvé. Veuillez vérifier le code saisi.");
+                    Toast.makeText(getApplicationContext(), "Pas d'étape trouvé. Veuillez vérifier le qrCode saisi.", Toast.LENGTH_SHORT).show();
+                    titreEtape.setText("Erreur 404");
                 } else {
                     titreEtape.setText("Erreur 1 : " + error);
                 }
@@ -106,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    private void fillDepartementResultat(JSONObject jsonObject) {
+    // Dispatch des données de l'étape
+    private void fillEtapeResultat(JSONObject jsonObject) {
         try {
             titreEtapeActuelle = jsonObject.getString("nom");
             descriptionEtapeActuelle = jsonObject.getString("description");
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Requete de modification des données
     private void putRequest() throws JSONException {
         if(favori){
             nbFavoriEtapeActuelle = nbFavoriEtapeActuelle-1;
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Lecture
+    // Lecture des données sockage interne(changement statut like)
     private void readData() {
         final ImageView ajoutfavori = findViewById(R.id.choixFavori);
         try {
@@ -216,10 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 String resultat = lu.append((char)value).toString();
                 if (resultat.contentEquals("true")){
                     favori = true;
-                    //Toast.makeText(MainActivity.this, "Interne : " + lu.toString(), Toast.LENGTH_SHORT).show();
                     ajoutfavori.setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_on));
                 } else {
-                    //Toast.makeText(MainActivity.this, "Rien avoir : ",Toast.LENGTH_SHORT).show();
                     ajoutfavori.setImageDrawable(getResources().getDrawable(android.R.drawable.star_big_off));
                 }
             }

@@ -29,8 +29,6 @@ import java.io.InputStreamReader;
 
 public class EtapeActivity extends AppCompatActivity {
     private static final Object REQUEST_TAG = new Object();
-    // private static final String URL_PATTERN = "http://192.168.1.58:9090/itinetape/etape/2";
-    // private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/itineraire/2";
     private RequestQueue requestQueue;
     private TextView nbFavori;
     private TextView titreEtape;
@@ -99,16 +97,18 @@ public class EtapeActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        fillItinetapeResultat(response);
+                        fillEtapeResultat(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if(error.networkResponse != null
                         && error.networkResponse.statusCode == 404) {
-                    titreEtape.setText("Pas de département trouvé. Veuillez vérifier le code saisi.");
+                    Toast.makeText(getApplicationContext(), "Pas d'étape trouvé. Veuillez vérifier le qrCode saisi.", Toast.LENGTH_SHORT).show();
+                    titreEtape.setText("Erreur 404");
                 } else {
                     titreEtape.setText("Erreur 1 : " + error);
+                    Toast.makeText(getApplicationContext(), "Erreur 1 : " + error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,7 +116,7 @@ public class EtapeActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    private void fillItinetapeResultat(JSONObject jsonObject) {
+    private void fillEtapeResultat(JSONObject jsonObject) {
         try {
             titreEtapeActuelle = jsonObject.getString("nom");
             descriptionEtapeActuelle = jsonObject.getString("description");
@@ -136,6 +136,7 @@ public class EtapeActivity extends AppCompatActivity {
         }
     }
 
+    // Requete de modification des données
     private void putRequest() throws JSONException {
         if(favori){
             nbFavoriEtapeActuelle = nbFavoriEtapeActuelle-1;

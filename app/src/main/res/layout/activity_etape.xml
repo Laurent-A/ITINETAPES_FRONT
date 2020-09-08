@@ -118,8 +118,13 @@
             android:layout_height="wrap_content"
             android:text="Voir les Commentaires des walkers" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="232dp"
+            android:layout_height="345dp" />
+
     </LinearLayout>
 
+    <!--
     <Button
         android:id="@+id/LectureButton"
         android:layout_width="wrap_content"
@@ -130,6 +135,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/titreEtape" />
-
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
