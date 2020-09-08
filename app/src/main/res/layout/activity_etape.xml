@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titreEtape"
+        android:layout_width="400dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:text="ETAPE 1 : Le parc de la réunion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="389dp"
+        android:layout_height="139dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape" />
+
+    <LinearLayout
+        android:layout_width="426dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="216dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape">
+
+        <ImageView
+            android:id="@+id/logoFavori"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+
+        <TextView
+            android:id="@+id/nbFavori"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="182" />
+
+        <TextView
+            android:id="@+id/textfavori"
+            android:layout_width="295dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:text="petits pedestres aiment cette étape" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/choixFavori"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="276dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape"
+        app:srcCompat="@android:drawable/btn_star_big_off" />
+
+    <LinearLayout
+        android:layout_width="384dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="340dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/stat_notify_chat" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="365dp"
+        android:layout_height="124dp"
+        android:layout_marginTop="432dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voir les Photos des walkers" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voir les Commentaires des walkers" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="232dp"
+            android:layout_height="345dp" />
+
+    </LinearLayout>
+
+    <!--
+    <Button
+        android:id="@+id/LectureButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="556dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titreEtape" />
+-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
