@@ -31,7 +31,7 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
     private static final Object REQUEST_TAG = new Object();
     // private static final String URL_PATTERN = "http://l'adresseIpDuPc:9090/itinetape/etape/3";
-    private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/etape/45";
+    private static final String URL_PATTERN = "http://10.0.2.2:9090/itinetape/etape/54";
     private RequestQueue requestQueue;
     private TextView titreEtape;
     private TextView nbFavori;
